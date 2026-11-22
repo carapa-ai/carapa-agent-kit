@@ -1,0 +1,138 @@
+{
+  "skill_name": "project-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/project-setup — initialize this new React application for CarapaBoard. It uses pnpm, has login and Playwright tests, but no custom pipeline or agent rules yet.",
+      "expected_output": "Inspects code and docs, establishes verification, offers deterministic UI/login setup, reflects rules, then proposes stages and prompts one approval at a time without committing.",
+      "files": [],
+      "expectations": [
+        "Calls get_project_setup before repository inspection or configuration",
+        "Establishes and runs a canonical pnpm verification command before generating prompts",
+        "Offers Playwright setup with deterministic login, ignored evidence, clean teardown, shared Board sessions for all managed runs, and explicit named sessions only outside Board-managed runs",
+        "Reuses preview infrastructure and offers .agent/start-browser.sh for default and worktree previews without nginx, publishing a ready URL and preserving shared apps during test cleanup",
+        "Uses Reflect to update .agent/rules before proposing stage prompts",
+        "Offers worktree isolation when disabled and enables it only after approval",
+        "Generated prompts rely on harness-injected rules and contain no instruction to read .agent/rules or run git status as a preflight",
+        "The shared worker prompt uses add_task_comment on the current executable stage before update_task moves the task to question, verifies both calls, and does not use send_message",
+        "Does not commit, push, merge, choose a repository, or create a board task"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Improve this existing backend project's CarapaBoard setup while preserving its custom stages and current verify command.",
+      "expected_output": "Offers preserve-and-improve, reuses adequate verification, reconciles existing rules, omits irrelevant Playwright setup, and proposes targeted prompt changes.",
+      "files": [],
+      "expectations": [
+        "Offers preserve-and-improve rather than replacing stages immediately",
+        "Reuses the existing adequate verify command",
+        "Does not offer irrelevant browser setup for a backend-only repository",
+        "Requests separate approval for each board configuration step"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/project-setup for this Yarn monorepo. CI runs lint, generation checks, types, unit tests, and a build; create one easy agent verification entry point.",
+      "expected_output": "Derives a monorepo-safe canonical verification script from CI, validates it, reflects the exact command, and generates repository-specific coding/testing/review prompts afterward.",
+      "files": [],
+      "expectations": [
+        "Inspects workspace manifests and CI before choosing verification commands",
+        "Creates or proposes .agent/verify.sh as the stable monorepo entry point",
+        "Preserves Yarn and includes the evidenced lint, generation, type, test, and build checks",
+        "Reflects the final verification command before generating prompts"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Set up worktree hooks for this sandbox. get_project_setup reports repository.connected false and worktree mode. The current project workspace contains server.mjs, public/, library/, and .agent/start-browser.sh, but no Git checkout. No host mount mapping is available.",
+      "expected_output": "Pauses hook configuration, diagnoses the accessible project workspace read-only, explains where the app is, and gives concrete repository migration, Board connection, sandbox recreation, and retry steps without inventing a host path or performing the migration.",
+      "files": [],
+      "expectations": [
+        "Pauses repository-dependent mutations when get_project_setup reports repository.connected false, but inspects the current project workspace read-only",
+        "Identifies existing app files and distinguishes missing Board connection from missing files, Git checkout, or an empty LOCAL_REPO",
+        "Explains copying app source and helpers to a dedicated Git repository with an initial commit, preserving saved models and Board operational data",
+        "Names Project Settings → Repository → Repository Location and distinguishes the host path supplied as LOCAL_REPO from the sandbox workspace path",
+        "Explains that mount changes need sandbox recreation, a plain restart is insufficient, and changing settings does not move files",
+        "Does not invent a host path, search outside the project, request credentials, or perform migration, commits, or sandbox recreation without authorization",
+        "States that hooks remain unapplied and that setup must recheck the connection and checkout before continuing",
+        "Explains that the agent will initialize missing local Git once the selected directory is configured and accessible, without initializing the fallback group-data folder or silently committing",
+        "Uses the selected project defaultBranch setting, falling back to develop when unset or empty, and initializes missing Git with that explicit initial branch",
+        "Assumes no computer or Git knowledge: explains the blocker in plain language, gives exact applicable UI steps, and offers to perform the prepared first commit with permission rather than stopping at technical prerequisites or claiming setup is ready"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run /project-setup for child project <child-project>. It inherits a shared sandbox from parent <parent-project>, so the MCP credential identifies the parent. (Eval runner: replace <child-project> and <parent-project> with a real child/parent pair on your board where the child shares the parent's sandbox.)",
+      "expected_output": "Uses <child-project> as target_project for every setup tool, verifies the returned projectId, materializes child-local stages before stage prompts, and never mutates <parent-project>'s pipeline.",
+      "files": [],
+      "expectations": [
+        "Passes target_project <child-project> to get_project_setup and every mutation tool",
+        "Confirms the snapshot projectId is <child-project>",
+        "Applies a local child topology before writing child-specific stage prompts",
+        "Does not modify the <parent-project> parent pipeline"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "/project-setup: add worktree setup and teardown for this UI project. The sandbox only contains this project and the installed skill, not CarapaBox source. The user already accepted UI setup. Explain the runner contract and validate what is possible without provisioning credentials.",
+      "expected_output": "Uses the bundled worktree hook reference, implements POSIX sh hooks with no positional arguments and WT_* environment, handles reuse and cleanup, and reports unavailable provisioning validation precisely.",
+      "files": [],
+      "expectations": [
+        "Reads references/worktree-hooks.md without asking the user for unavailable runner source",
+        "Uses worktree-root CWD, zero positional arguments, and sandbox WT_PATH; does not assume Bash from a shebang",
+        "Accounts for setup after symlink provisioning on add/reuse/reset and teardown before reset/removal",
+        "Keeps UI-session cleanup separate from teardown of resources needed by later task stages",
+        "Distinguishes best-effort hook failure from strict stack behavior and checks observable readiness",
+        "Does not invent provisioning credentials or claim manual invocation exercised the actual runner"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "/project-setup for this TypeScript service. It uses Bun with bun.lock, and .agent/worktree-setup.sh symlinks node_modules from the main checkout when the lockfile matches and otherwise runs bun install.",
+      "expected_output": "Reflects a rule that pins dependency versions to bun.lock, points to installed sources and .d.ts files under node_modules, and states that task worktrees have them via worktree setup; the coding prompt references the guidance without paths.",
+      "files": [],
+      "expectations": [
+        "Reflects third-party API guidance naming bun.lock and node_modules/<pkg> sources and type definitions",
+        "States from the inspected worktree setup that task worktrees receive node_modules by symlink or install",
+        "Does not mention vendor/, composer.lock, or other ecosystems the project does not use",
+        "The coding prompt tells workers to check unfamiliar third-party APIs against the installed version via injected guidance, without hard-coded dependency paths or an instruction to read .agent/rules"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "/project-setup for this Laravel application. Dependencies are managed by Composer with composer.lock; vendor/ is gitignored and the repository has no worktree setup hook.",
+      "expected_output": "Reflects a rule naming composer.lock and vendor/<vendor>/<pkg>, records that fresh worktrees may lack vendor/, and gives the lockfile-version-plus-upstream-docs fallback or proposes provisioning vendor/ in worktree setup.",
+      "files": [],
+      "expectations": [
+        "Reflects third-party API guidance naming composer.lock and vendor/<vendor>/<pkg>",
+        "Does not mention node_modules or JavaScript lockfiles",
+        "Records that a fresh task worktree may not contain vendor/ and gives a fallback using the composer.lock version and that version's upstream documentation, or proposes worktree provisioning for vendor/ subject to approval",
+        "Does not install dependencies during setup without approval"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "/project-setup: switch this PHP app to worktree checkout mode and add a Testing stage. It has an admin UI; the main checkout is served at http://nginx/, there is no .agent/start-browser.sh, and the worktree setup hook creates a per-worktree database without any user accounts.",
+      "expected_output": "Does not enable worktree mode with browser Testing while the worktree preview and test login are missing: either builds the preview hook and a worktree-only test login first, or states that UI cards will be blocked in Testing until they exist and switches only after the user confirms.",
+      "files": [],
+      "expectations": [
+        "Identifies that no worktree preview (start-browser.sh or per-worktree .preview-url) and no test login in the worktree database exist",
+        "Builds or proposes the preview hook and a worktree-only test login before calling set_project_task_checkout_mode, or asks the user to confirm switching despite blocked UI Testing",
+        "Does not write a Testing prompt that only says UI checks are blocked while still enabling worktree mode without telling the user",
+        "Does not use the main checkout's http://nginx/ preview as the Testing target for worktree branches"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "/project-setup: switch this static React dashboard to worktree checkout mode and add a Testing stage. It has no login or user accounts; the worktree setup hook already runs `bun run dev` on a per-worktree port and writes .preview-url.",
+      "expected_output": "Confirms the worktree preview works and switches (after user approval) without requiring or inventing a test login; the Testing prompt states the app has no login.",
+      "files": [],
+      "expectations": [
+        "Does not block the switch or ask for a test login because the app has none",
+        "Does not add a fake login, test user or auth seeder",
+        "Writes a Testing prompt that uses the worktree preview and states there is no login",
+        "Still asks for user approval before calling set_project_task_checkout_mode"
+      ]
+    }
+  ]
+}
